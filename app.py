@@ -9,7 +9,7 @@ DB = psycopg2.connect(options=f'-c search_path={config.options}', database=confi
 MY_CURSOR = DB.cursor()
 
 def parse():
-    os.system(f'instagram-scraper {config.instagram_target6} -u {config.instagram_user} -p {config.instagram_password} --comments')
+    os.system(f'instagram-scraper {config.instagram_target} -u {config.instagram_user} -p {config.instagram_password} --comments')
 
 def read_json():
     with open(config.path_to_json, 'r', encoding='utf-8') as f:
