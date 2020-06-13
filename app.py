@@ -79,8 +79,8 @@ parse()
 
 posts, comments = read_json()
 
-MY_CURSOR.execute('create table if not exists post(id bigint not null, constraint post_pk primary key, description text, display_url text);')
+MY_CURSOR.execute('create table if not exists post(id bigint not null, constraint post_pk primary key, description text, display_url text)')
 save_posts(posts)
-MY_CURSOR.execute('create table if not exists comment(id bigserial not null constraint comment_pkey primary key, post_id bigint not null constraint comment_post_id_fk references post, owner_id bigint not null, username varchar(30) not null, comment_text text not null, deleted boolean default false, created_at bigint not null);')
+MY_CURSOR.execute('create table if not exists comment(id bigserial not null constraint comment_pkey primary key, post_id bigint not null constraint comment_post_id_fk references post, owner_id bigint not null, username varchar(30) not null, comment_text text not null, deleted boolean default false, created_at bigint not null)')
 save_comments(comments)
 find_deleted_messages(comments)
