@@ -3,7 +3,6 @@ import psycopg2
 import os
 from googletrans import Translator
 import emoji
-import time
 
 import config
 
@@ -113,7 +112,7 @@ def translate():
         DB.commit()
 
 
-parse()
+# parse()
 
 read_json()
 
