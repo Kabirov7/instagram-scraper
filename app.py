@@ -92,9 +92,9 @@ def translate():
     posts = MY_CURSOR.fetchall()
     for ps in posts:
         strin = ps[1]
-        de_str = emoji.demojize(strin)
-        description_ru = trans.translate(de_str, dest='ru')
-        description_en = trans.translate(de_str, dest='en')
+        no_emoji = emoji.get_emoji_regexp().sub(u'', strin)
+        description_ru = trans.translate(no_emoji, dest='ru')
+        description_en = trans.translate(no_emoji, dest='en')
         dosca = description_en.text.replace("'", '"')
         MY_CURSOR.execute(
             f"update post set description_ru='{description_ru.text}', description_en='{dosca}' where id={ps[0]}")
@@ -104,10 +104,9 @@ def translate():
     coments = MY_CURSOR.fetchall()
     for com in coments:
         strin = com[4]
-        for_rus = emoji.get_emoji_regexp().sub(u'смайлик ', strin)
-        de_str = emoji.demojize(strin)
-        comment_text_ru = trans.translate(for_rus, dest='ru')
-        comment_text_en = trans.translate(de_str, dest='en')
+        no_emoji = emoji.get_emoji_regexp().sub(u'', strin)
+        comment_text_ru = trans.translate(no_emoji, dest='ru')
+        comment_text_en = trans.translate(no_emoji, dest='en')
         dosca = comment_text_en.text.replace("'", '"')
         MY_CURSOR.execute(
             f"update comment set comment_text_ru='{comment_text_ru.text}', comment_text_en='{dosca}' where id={com[0]}")
@@ -120,7 +119,7 @@ read_json()
 
 posts, comments = read_json()
 
-MY_CURSOR.execute('create table if not exists post(id bigint not null constraint post_pk primary key, description text, display_url text, description_ru text, description_en text)')
+MY_CURSOR.execute('create table if not exists post(id bigint not null constraint post_pk primary key, description text, display_url text, description_ru text default null, description_en text default null)')
 save_posts(posts)
 
 MY_CURSOR.execute('create table if not exists comment(id bigserial not null constraint comment_pkey primary key, post_id bigint not null constraint comment_post_id_fk references post, owner_id bigint not null, username varchar(30) not null, comment_text text not null, deleted boolean default false, created_at bigint not null, comment_text_ru text default null, comment_text_en text default null)')
