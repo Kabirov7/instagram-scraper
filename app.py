@@ -19,7 +19,7 @@ def parse():
 
 
 def read_json():
-    with open('json/za_dzhumabekova\\za_dzhumabekova.json', 'r', encoding='utf-8') as f:
+    with open(const.path_to_json, 'r', encoding='utf-8') as f:
         text = json.load(f)
 
     comments = []
@@ -125,4 +125,4 @@ MY_CURSOR.execute('create table if not exists comment(id bigserial not null cons
 save_comments(comments)
 
 find_deleted_messages(comments)
-translate()
+#translate()
